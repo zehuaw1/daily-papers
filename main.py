@@ -661,8 +661,6 @@ def process_user(user_config):
         )
         paper_sources.append(hf_papers)
 
-    return
-
     # Merge and deduplicate all sources
     papers = merge_and_deduplicate_papers(paper_sources)
 
