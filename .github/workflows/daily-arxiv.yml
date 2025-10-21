@@ -8,8 +8,8 @@ on:
     # GitHub Actions does not support time zone in cron, so use 13:00 UTC for most of the year (DST)
     - cron: '0 13 * * *'
 
-    # Allow manual trigger for testing
-    workflow_dispatch:
+  # Allow manual trigger for testing
+  workflow_dispatch:
 
 jobs:
   fetch-and-send:
