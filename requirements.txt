@@ -1,0 +1,12 @@
+# ArXiv Pusher Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies
+requests>=2.31.0
+arxiv>=2.1.0
+PyPDF2>=3.0.0
+openai<1.0.0  # Compatible with DeepSeek API
+markdown2>=2.4.0
+loguru>=0.7.0
+apscheduler>=3.10.0
+beautifulsoup4>=4.12.0
