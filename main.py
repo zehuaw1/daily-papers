@@ -173,7 +173,13 @@ def fetch_huggingface_papers(days_lookback=1, max_papers=50, sort='trending'):
 def fetch_papers(arxiv_categories):
     """Fetch papers from specified arXiv categories"""
     search_query = " OR ".join([f"cat:{cat}" for cat in arxiv_categories])
-    client = Client()
+    client = Client(
+        page_size=5,  # Smaller page size to reduce impact of pagination failures
+        delay_seconds=3.0,  # Be nice to arXiv API
+        num_retries=3  # Retry on failures
+    )
+
+    # Request up to 100 papers total (will paginate automatically)
     search = Search(
         query=search_query,
         sort_by=SortCriterion.SubmittedDate,
@@ -192,9 +198,16 @@ def fetch_papers(arxiv_categories):
 
     logger.info(f"Fetching papers from arXiv since {target_date.strftime('%Y-%m-%d')}")
 
-    for result in client.results(search):
-        published_dt = result.published.replace(tzinfo=None)
-        if target_date <= published_dt:
+    try:
+        # Iterate through results - library handles pagination automatically
+        for result in client.results(search):
+            published_dt = result.published.replace(tzinfo=None)
+
+            # Stop if we've gone too far back in time
+            if published_dt < target_date:
+                logger.info(f"Reached papers older than target date, stopping")
+                break
+
             # Extract arXiv ID from entry_id
             arxiv_id = result.entry_id.split('/')[-1]
 
@@ -211,7 +224,13 @@ def fetch_papers(arxiv_categories):
                 "arxiv_id": arxiv_id
             })
 
-    logger.success(f"Found {len(papers)} papers from arXiv")
+        logger.success(f"Found {len(papers)} papers from arXiv")
+
+    except Exception as e:
+        # If pagination fails, keep what we've fetched so far
+        logger.warning(f"ArXiv API pagination error: {str(e)}")
+        logger.info(f"Continuing with {len(papers)} papers successfully fetched")
+
     return papers
 
 
@@ -641,6 +660,8 @@ def process_user(user_config):
             sort=hf_sort
         )
         paper_sources.append(hf_papers)
+
+    return
 
     # Merge and deduplicate all sources
     papers = merge_and_deduplicate_papers(paper_sources)
