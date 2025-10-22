@@ -5,7 +5,7 @@
 requests>=2.31.0
 arxiv>=2.1.0
 PyPDF2>=3.0.0
-openai<1.0.0  # Compatible with DeepSeek API
+openai>=1.0.0  # Modern OpenAI client (compatible with Gemini, DeepSeek, etc.)
 markdown2>=2.4.0
 loguru>=0.7.0
 apscheduler>=3.10.0

@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from arxiv import Client, Search, SortCriterion, SortOrder
 from PyPDF2 import PdfReader
-import openai
+from openai import OpenAI
 import markdown2
 from loguru import logger
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -362,25 +362,27 @@ def get_paper_text(paper, user_dir):
 
 def llm_call(prompt, temperature=0.7):
     """Make an LLM API call and return response with token stats"""
-    # Configure OpenAI with custom base URL for DeepSeek compatibility
-    openai.api_key = AI_CONFIG["api_key"]
-    openai.api_base = AI_CONFIG["base_url"]
+    # Initialize OpenAI client with custom base URL (works for Gemini, DeepSeek, etc.)
+    client = OpenAI(
+        api_key=AI_CONFIG["api_key"],
+        base_url=AI_CONFIG["base_url"]
+    )
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model=AI_CONFIG["model"],
             messages=[{"role": "user", "content": prompt}],
             temperature=temperature,
         )
 
-        usage = response['usage']
+        usage = response.usage
         token_stats = {
-            'prompt_tokens': usage['prompt_tokens'],
-            'completion_tokens': usage['completion_tokens'],
-            'total_tokens': usage['total_tokens']
+            'prompt_tokens': usage.prompt_tokens,
+            'completion_tokens': usage.completion_tokens,
+            'total_tokens': usage.total_tokens
         }
 
-        content = response['choices'][0]['message']['content'].strip()
+        content = response.choices[0].message.content.strip()
         return content, token_stats
 
     except Exception as e:
