@@ -39,7 +39,7 @@ jobs:
 
     - name: Generate config.py from secrets
       env:
-        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
         EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
@@ -53,15 +53,28 @@ jobs:
         # ==============================================================================
         # AI Model Configuration
         # ==============================================================================
-        AI_CONFIG = {
-            "api_key": "${DEEPSEEK_API_KEY}",
-            "base_url": "https://api.deepseek.com",
-            "model": "deepseek-chat",
 
-            # Pricing (for cost tracking) - DeepSeek V3 pricing
-            "price_per_million_input_tokens": 2.00,  # CNY
-            "price_per_million_output_tokens": 3.00,  # CNY
+        # Google Gemini API (OpenAI-compatible endpoint)
+        AI_CONFIG = {
+            "api_key": "${GOOGLE_GEMINI_API_KEY}",
+            "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+            "model": "gemini-2.5-flash",
+
+            # Pricing (for cost tracking) - Gemini 2.5 Flash pricing (USD)
+            "price_per_million_input_tokens": 0.30,  # USD
+            "price_per_million_output_tokens": 2.50,  # USD
         }
+
+        # DeepSeek API (commented out)
+        # AI_CONFIG = {
+        #     "api_key": "${DEEPSEEK_API_KEY}",
+        #     "base_url": "https://api.deepseek.com",
+        #     "model": "deepseek-chat",
+        #
+        #     # Pricing (for cost tracking) - DeepSeek V3 pricing
+        #     "price_per_million_input_tokens": 2.00,  # CNY
+        #     "price_per_million_output_tokens": 3.00,  # CNY
+        # }
 
         # ==============================================================================
         # Email Server Configuration

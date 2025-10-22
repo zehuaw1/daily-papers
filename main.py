@@ -530,10 +530,10 @@ def log_token_cost(user_name, filter_in, filter_out, gen_in, gen_out):
 
     logger.info("=" * 80)
     logger.info(f"[{user_name}] Token Usage:")
-    logger.info(f"  Filter:  {filter_in:,} in + {filter_out:,} out = {filter_cost:.4f} CNY")
-    logger.info(f"  Summary: {gen_in:,} in + {gen_out:,} out = {gen_cost:.4f} CNY")
+    logger.info(f"  Filter:  {filter_in:,} in + {filter_out:,} out = {filter_cost:.4f} USD")
+    logger.info(f"  Summary: {gen_in:,} in + {gen_out:,} out = {gen_cost:.4f} USD")
     logger.info(f"  Total:   {total_in:,} in + {total_out:,} out = {total:,} tokens")
-    logger.info(f"  Cost:    {total_cost:.4f} CNY")
+    logger.info(f"  Cost:    {total_cost:.4f} USD")
     logger.info("=" * 80)
 
 def build_filtered_appendix(filtered_papers):
