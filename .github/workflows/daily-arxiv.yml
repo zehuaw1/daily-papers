@@ -92,7 +92,7 @@ jobs:
         # ==============================================================================
         GENERAL_CONFIG = {
             "days_lookback": 1,
-            "max_papers_per_user": 10,
+            "max_papers_per_user": 5,
             "max_text_length": 100000,
 
             # Social Feed Integration (FREE)
