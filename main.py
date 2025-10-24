@@ -40,7 +40,7 @@ async def send_email(subject, content, receiver_email):
     """Send email notification (async version)"""
     html_content = markdown2.markdown(
         content,
-        extras=["tables", "mathjax", "fenced-code-blocks"]
+        extras=["tables", "fenced-code-blocks"]
     )
     msg = MIMEText(html_content, "html", "utf-8")
     msg["Subject"] = subject
@@ -721,9 +721,10 @@ def process_user(user_config):
         if filtered_papers:
             full_report += build_filtered_appendix(filtered_papers)
 
-        # Send email
+        # Send email with formatted date
+        today = datetime.now().strftime("%b %d, %Y")  # e.g., "Oct 22, 2025"
         asyncio.run(send_email(
-            f"Daily Papers - {user_name}",
+            f"📰 Daily Papers — {today}",
             full_report,
             user_email
         ))
