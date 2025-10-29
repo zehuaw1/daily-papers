@@ -171,6 +171,9 @@ jobs:
         
         Include the following sections:
         
+        1. **Single Sentence Summary**
+           - Provide a brief, TL;DR overview of the paper in 1-2 sentences.
+        
         1. **Key Contributions**
            - List 2-3 core contributions of the paper.
            - Focus on what is *novel* or *distinctive* compared to prior work.
@@ -192,6 +195,7 @@ jobs:
         
         **Formatting Instructions:**
         - Respond in clear, professional **markdown** using bullet points and short paragraphs
+        - Directly start with the summary without adding introductory phrases like "Here is a concise, structured, and technically precise summary..."
         - **IMPORTANT**: Do NOT use LaTeX notation (e.g., $\theta$, $\mathbb{{E}}$)
         - **For equations**: Use Unicode math symbols with inline code formatting
           - Example: `L(θ) = -∑ᵢ log p(xᵢ|θ)` instead of LaTeX
